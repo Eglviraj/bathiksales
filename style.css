@@ -1,0 +1,112 @@
+/* Base styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+  }
+  
+  #data-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center elements horizontally */
+    padding: 1em; /* Responsive padding */
+  }
+  
+  .dropdown-selector-container,
+  .form-row {
+    margin-bottom: 1em; /* Responsive spacing between elements */
+  }
+  
+  /* Media Queries for Mobile Responsiveness */
+  @media screen and (max-width: 768px) {
+    #data-container {
+      flex-direction: column-reverse; /* Reverse order on mobile for better layout */
+    }
+  
+    .form-row {
+      display: flex; /* Make buttons appear side-by-side on mobile */
+      justify-content: space-between; /* Distribute buttons evenly */
+    }
+  }
+  
+
+/* Style for the container */
+.dropdown-selector-container {
+    /*position: relative;
+    display: inline-block;*/
+    position: relative;
+    display: flex;
+    justify-content: center; /* Center the content within the element */
+    align-items: center;   /* Center the element vertically within its parent (optional) */
+  }
+
+  .form-row {
+    position: relative;
+    display: flex;
+    justify-content: center; /* Center the content within the element */
+    align-items: center;   /* Center the element vertically within its parent (optional) */
+  }
+
+
+/* Style for the select field */
+.dropdown-selector-select {
+    padding: 8px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    appearance: none; /* Remove default arrow */
+    -webkit-appearance: none; /* Remove default arrow for Safari */
+    -moz-appearance: none; /* Remove default arrow for Firefox */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>'); /* Custom arrow icon */
+    background-repeat: no-repeat;
+    background-position: right 8px top 50%;
+    background-size: 16px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+  }
+  
+  table {
+    border-collapse: collapse;
+    width: 80%;
+    
+  }
+  
+  th, td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+  
+  .logo{
+    display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px; /* Specify the desired height */
+  }
+
+  .logo img{
+    max-width: 100%; /* Ensure the image doesn't exceed the container width */
+      max-height: 100%; /* Ensure the image doesn't exceed the container height */
+    
+  }
+
+  #transaction-container {
+    display: flex; /* Make the container a flexbox container */
+    justify-content: center; /* Center the content (table) horizontally */
+    align-items: center; /* Center the content (table) vertically (optional) */
+  }
+
+  .sumerry {
+    display: flex; /* Make the container a flexbox container */
+    justify-content: center; /* Center the content (table) horizontally */
+    align-items: center; /* Center the content (table) vertically (optional) */
+  }

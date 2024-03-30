@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vinu Bathik</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-database.js"></script>   
+  <script src="config.js"></script>
+  <script src="saveSales.js"></script>
+  <script src="updateTable.js"></script>
+    <!--script>
+    document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("btn_save").addEventListener("click", function() {
+        // Retrieve values from input fields
+        var itemSelect = document.getElementById("item");
+        var itemIndex = itemSelect.selectedIndex;
+        var item = itemSelect.options[itemIndex].text; // Get the text of the selected option
+
+        var salePrice = document.getElementById("sale_price").value;
+        var cost = document.getElementById("cost").value;
+        var profit = document.getElementById("profit").value;
+
+        // Get current timestamp
+        var timestamp = new Date().getTime();
+
+        // Push data to Firebase Realtime Database under "sales" node
+        firebase.database().ref('sales').push({
+            item: item,
+            salePrice: salePrice,
+            cost: cost,
+            profit: profit,
+            timestamp: timestamp
+        })
+        .then(function() {
+            console.log("Data saved successfully!");
+            // Clear input fields after saving data
+            document.getElementById("item").value = "";
+            document.getElementById("sale_price").value = "";
+            document.getElementById("cost").value = "";
+            document.getElementById("profit").value = "";
+        })
+        .catch(function(error) {
+            console.error("Error saving data: ", error);
+        });
+    });
+});
+
+  </script-->
+    <!--script>
+    document.addEventListener("DOMContentLoaded", function() {
+    // Reference to the sales table body
+    var salesTableBody = document.getElementById("salesTableBody");
+
+    // Get current month and year
+    var currentDate = new Date();
+    var currentMonth = currentDate.getMonth() + 1; // January is 0, so add 1
+    var currentYear = currentDate.getFullYear();
+
+    // Format the current date in "MMMDD" format
+    var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var formattedDate = monthNames[currentMonth - 1] + currentDate.getDate();
+
+    // Reference to the "sales" node in Firebase
+    var salesRef = firebase.database().ref('sales');
+
+    // Query Firebase for records of the current month
+    salesRef.orderByChild('timestamp').startAt(new Date(currentYear, currentMonth - 1, 1).getTime()).endAt(new Date(currentYear, currentMonth, 0).getTime()).once('value')
+    .then(function(snapshot) {
+        // Clear existing table rows
+        salesTableBody.innerHTML = "";
+
+        // Loop through the retrieved records
+        snapshot.forEach(function(childSnapshot) {
+            var childData = childSnapshot.val();
+
+            // Create a new row in the table
+            var newRow = salesTableBody.insertRow();
+
+            // Create cells for each column
+            var dateCell = newRow.insertCell(0);
+            var itemCell = newRow.insertCell(1);
+            var priceCell = newRow.insertCell(2);
+            var costCell = newRow.insertCell(3);
+            var profitCell = newRow.insertCell(4);
+
+            // Set the cell values
+            dateCell.textContent = formattedDate; // Set the date to the formatted current date
+            itemCell.textContent = childData.item;
+            priceCell.textContent = childData.salePrice;
+            costCell.textContent = childData.cost;
+            profitCell.textContent = childData.profit;
+        });
+    })
+    .catch(function(error) {
+        console.error("Error retrieving data: ", error);
+    });
+});
+
+</script-->
+    <!--script>
+document.addEventListener("DOMContentLoaded", function() {
+        // Reference to the sales table body
+        var salesTableBody = document.getElementById("salesTableBody");
+
+        // Function to update the table with data
+        function updateTable(snapshot) {
+            // Clear existing table rows
+            salesTableBody.innerHTML = "";
+
+            // Get current month and year
+            var currentDate = new Date();
+            var currentMonth = currentDate.getMonth() + 1; // January is 0, so add 1
+            var currentYear = currentDate.getFullYear();
+
+            // Format the current date in "MMMDD" format
+            var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            var formattedDate = monthNames[currentMonth - 1] + currentDate.getDate();
+
+            // Loop through the retrieved records
+            snapshot.forEach(function(childSnapshot) {
+                var childData = childSnapshot.val();
+
+                // Get month and year of the data
+                var dataDate = new Date(childData.timestamp);
+                var dataMonth = dataDate.getMonth() + 1;
+                var dataYear = dataDate.getFullYear();
+
+                // Check if the data is from the current month and year
+                if (dataMonth === currentMonth && dataYear === currentYear) {
+                    // Create a new row in the table
+                    var newRow = salesTableBody.insertRow();
+
+                    // Create cells for each column
+                    var dateCell = newRow.insertCell(0);
+                    var itemCell = newRow.insertCell(1);
+                    var priceCell = newRow.insertCell(2);
+                    var costCell = newRow.insertCell(3);
+                    var profitCell = newRow.insertCell(4);
+
+                    // Set the cell values
+                    dateCell.textContent = formattedDate; // Set the date to the formatted current date
+                    itemCell.textContent = childData.item;
+                    priceCell.textContent = childData.salePrice;
+                    costCell.textContent = childData.cost;
+                    profitCell.textContent = childData.profit;
+                }
+            });
+        }
+
+        // Reference to the "sales" node in Firebase
+        var salesRef = firebase.database().ref('sales');
+
+        // Listen for changes in the "sales" node
+        salesRef.on('value', function(snapshot) {
+            updateTable(snapshot);
+        }, function(error) {
+            console.error("Error updating table: ", error);
+        });
+    });
+    </script-->
+</head>
+<body>
+    <div class="logo">
+        <img src="https://i.imgur.com/wsYthJW.jpeg" alt="Description of the image">
+    </div>
+    
+    <div  class="dropdown-selector-container">
+        <select id="item" class="dropdown-selector-select">
+            <option value="" disabled selected>Select Option</option>
+            <option value="option1">සාරි</option>
+            <option value="option2">ගවුම් රෙදි</option>
+            <!--option value="option3">Option 3</option-->
+        </select>
+    </div>
+
+    <div id="data-container">
+
+        <div class="main-con" >
+            <input type="phone" id="sale_price" placeholder="විකුණුම් මිල : රු." style=" padding: 5px; border-radius: 5px; margin-top: 8px;">
+        </div>
+
+        <div class="main-con">   
+            <input type="phone" id="cost" placeholder="පිරිවැය : රු." style="padding: 5px; border-radius: 5px; margin-top: 8px;">
+        </div>
+       
+        <div class="main-con">   
+            <input type="phone" id="profit" placeholder="ලාබය : රු." style="padding: 5px; border-radius: 5px; margin-top: 8px;">
+        </div> 
+        
+    </div>
+
+    <script>
+
+        document.getElementById("cost").addEventListener("input", function() {
+            var salePrice = parseFloat(document.getElementById("sale_price").value) || 0;
+            var cost = parseFloat(document.getElementById("cost").value) || 0;
+            var profit = salePrice - cost;
+            document.getElementById("profit").value = profit.toFixed(2); // Format to two decimal places
+        });
+
+        document.getElementById("sale_price").addEventListener("input", function() {
+            var salePrice = parseFloat(document.getElementById("sale_price").value) || 0;
+            var cost = parseFloat(document.getElementById("cost").value) || 0;
+            var profit = salePrice - cost;
+            document.getElementById("profit").value = profit.toFixed(2); // Format to two decimal places
+        });
+
+        document.getElementById("sale_price").addEventListener("keypress", function(event) {
+            if (isNaN(event.key) && !event.key.includes(".")) {
+                event.preventDefault(); // Prevent non-numeric characters except "."
+            }
+        });
+
+        document.getElementById("cost").addEventListener("keypress", function(event) {
+            if (isNaN(event.key) && !event.key.includes(".")) {
+                event.preventDefault(); // Prevent non-numeric characters except "."
+            }
+        });
+
+        document.getElementById("profit").addEventListener("keypress", function(event) {
+            if (isNaN(event.key) && !event.key.includes(".")) {
+                event.preventDefault(); // Prevent non-numeric characters except "."
+            }
+        });
+
+
+    </script>
+
+    <div class="form-row">
+        <button id="btn_save" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 25px; margin-top: 12px; font-weight: bold;">SAVE</button>
+        <!--button id="btn_cancel" style="background-color: #ca2a2a; color: white; padding: 10px 20px; border: none; border-radius: 25px; margin-top: 12px; margin-left: 12px; font-weight: bold;">CANCEL</button-->
+    </div>
+
+    <div class="sumerry" style="margin-bottom: 5px;">
+        <label>Total sales :</label>
+        <label id="t_sales">Rs. 00.00</label>
+    </div>
+    <div class="sumerry" style="margin-bottom: 5px;">
+        <label>Total cost :</label>
+        <label id="t_cost">Rs. 00.00</label>
+    </div>
+    <div class="sumerry" style="margin-bottom: 20px;">
+        <label>Net Profit :</label>
+        <label id="N_profit" style="font-weight: bold; font-size: 22px;">Rs. 00.00</label>
+    </div>
+
+    <div id="transaction-container">
+
+        <table id="salesTable">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Cost</th>
+                <th>Profit</th>
+              </tr>
+            </thead>
+            <tbody id="salesTableBody">
+              </tbody>
+          </table>
+
+    </div>
+    
+</body>
+</html>
+
+
+
+
